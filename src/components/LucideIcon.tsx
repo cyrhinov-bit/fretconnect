@@ -40,7 +40,11 @@ import {
   Sliders,
   Mail,
   Lock,
-  Building
+  Building,
+  GitBranch,
+  GitMerge,
+  GitCommit,
+  GitPullRequest
 } from 'lucide-react';
 
 const iconsMap: Record<string, React.ComponentType<any>> = {
@@ -84,7 +88,11 @@ const iconsMap: Record<string, React.ComponentType<any>> = {
   Sliders,
   Mail,
   Lock,
-  Building
+  Building,
+  GitBranch,
+  GitMerge,
+  GitCommit,
+  GitPullRequest
 };
 
 interface LucideIconProps {

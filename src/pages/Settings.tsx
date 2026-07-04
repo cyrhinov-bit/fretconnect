@@ -3,7 +3,23 @@ import { motion } from 'motion/react';
 import LucideIcon from '../components/LucideIcon';
 
 export default function Settings() {
-  const [activeTab, setActiveTab] = useState<'general' | 'security' | 'webhooks'>('general');
+  const [activeTab, setActiveTab] = useState<'general' | 'security' | 'webhooks' | 'git'>('general');
+
+  const branches = [
+    { name: 'main', type: 'stable', desc: 'Version stable de production (PWA déployée sur Cloud Run)', author: 'Lead Architect', date: 'il y a 2h', commits: 242, status: 'Production' },
+    { name: 'develop', type: 'integration', desc: "Branche d'intégration pour les phases de qualification et tests", author: 'Dev Team', date: 'il y a 20m', commits: 541, status: 'Testing' },
+    { name: 'feature/admin-layout', type: 'feature', desc: 'Base de l\'interface, sidebar responsive, header fluide, thème dynamique', author: 'Cyril R.', date: 'Actif', commits: 14, status: 'Ready' },
+    { name: 'feature/auth', type: 'feature', desc: 'Authentification Firebase et profils administratifs multi-rôles', author: 'Cyril R.', date: 'Planifié', commits: 0, status: 'Draft' },
+    { name: 'feature/dashboard', type: 'feature', desc: 'Visualisation de l\'activité en direct, intégration D3/Recharts', author: 'Cyril R.', date: 'Actif', commits: 6, status: 'Ready' },
+    { name: 'feature/users', type: 'feature', desc: 'Base de données des collaborateurs et gestionnaires de transport', author: 'Cyril R.', date: 'Actif', commits: 4, status: 'Ready' },
+    { name: 'feature/transporters', type: 'feature', desc: 'Affiliation des compagnies de fret partenaires et fiches d\'enregistrement', author: 'Cyril R.', date: 'Planifié', commits: 0, status: 'Draft' },
+    { name: 'feature/kyc', type: 'feature', desc: 'Validation réglementaire des documents, assurances et KBIS transporteurs', author: 'Cyril R.', date: 'Planifié', commits: 0, status: 'Draft' },
+    { name: 'feature/vehicles', type: 'feature', desc: 'Registre de parc, diagnostic d\'exploitation et alertes visites techniques', author: 'Cyril R.', date: 'Planifié', commits: 0, status: 'Draft' },
+    { name: 'feature/missions', type: 'feature', desc: 'Kanban d\'affectation, routage intelligent et fiches de transport numériques', author: 'Cyril R.', date: 'Actif', commits: 8, status: 'Ready' },
+    { name: 'feature/payments', type: 'feature', desc: 'Facturation, Stripe Connect, commissionnement et transferts bancaires', author: 'Cyril R.', date: 'Planifié', commits: 0, status: 'Draft' },
+    { name: 'feature/disputes', type: 'feature', desc: 'Déclaration d\'avaries, retards et arbitrage des réclamations clients', author: 'Cyril R.', date: 'Planifié', commits: 0, status: 'Draft' },
+    { name: 'feature/settings', type: 'feature', desc: 'Paramètres globaux, configuration de l\'organisation et webhook logs', author: 'Cyril R.', date: 'Actif', commits: 11, status: 'Ready' },
+  ];
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -20,18 +36,19 @@ export default function Settings() {
       </div>
 
       {/* Tabs Row */}
-      <div className="flex border-b border-slate-200/55 dark:border-slate-800/60 gap-4">
+      <div className="flex border-b border-slate-200/55 dark:border-slate-800/60 gap-4 overflow-x-auto scrollbar-none pb-px">
         {[
           { id: 'general', label: 'Général', icon: 'Sliders' },
           { id: 'security', label: 'Sécurité & Accès', icon: 'Lock' },
-          { id: 'webhooks', label: 'Webhooks & API', icon: 'Globe' }
+          { id: 'webhooks', label: 'Webhooks & API', icon: 'Globe' },
+          { id: 'git', label: 'Stratégie Git & Flow', icon: 'GitBranch' }
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold tracking-wide border-b-2 transition-all cursor-pointer -mb-[1.5px] ${
+            className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold tracking-wide border-b-2 transition-all cursor-pointer -mb-[1.5px] whitespace-nowrap ${
               activeTab === tab.id
-                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 font-bold'
                 : 'border-transparent text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
             }`}
           >
@@ -109,6 +126,129 @@ export default function Settings() {
               <button className="px-4 py-2 text-xs font-semibold text-slate-950 bg-emerald-500 hover:bg-emerald-600 rounded-lg shadow-xs transition-colors cursor-pointer">
                 Activer le Webhook
               </button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'git' && (
+          <div className="space-y-6">
+            <div className="border-b border-slate-100 dark:border-slate-800/60 pb-4">
+              <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Modèle de Branches Git Flow</h3>
+              <p className="text-xs text-slate-400 mt-1">
+                Cartographie des branches du dépôt FretConnect et stratégie d'intégration continue des modules métiers.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Branch visual list */}
+              <div className="lg:col-span-2 space-y-4">
+                <div className="space-y-3">
+                  {branches.map((branch) => (
+                    <div
+                      key={branch.name}
+                      className="p-4 rounded-xl border border-slate-200/50 dark:border-slate-800/60 bg-slate-50/20 dark:bg-slate-900/10 hover:border-slate-300 dark:hover:border-slate-700/60 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`p-2 rounded-lg mt-0.5 shrink-0 ${
+                          branch.type === 'stable' 
+                            ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' 
+                            : branch.type === 'integration' 
+                            ? 'bg-purple-500/10 text-purple-500 border border-purple-500/20' 
+                            : 'bg-blue-500/10 text-blue-500 border border-blue-500/20'
+                        }`}>
+                          <LucideIcon name={branch.type === 'stable' ? 'Check' : branch.type === 'integration' ? 'GitMerge' : 'GitBranch'} size={15} />
+                        </div>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-mono text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors">
+                              {branch.name}
+                            </span>
+                            <span className={`px-1.5 py-0.5 text-[9px] font-bold rounded-sm ${
+                              branch.status === 'Production'
+                                ? 'bg-emerald-500/10 text-emerald-500'
+                                : branch.status === 'Testing'
+                                ? 'bg-purple-500/10 text-purple-400'
+                                : branch.status === 'Ready'
+                                ? 'bg-blue-500/10 text-blue-400'
+                                : 'bg-slate-100 dark:bg-slate-800 text-slate-400'
+                            }`}>
+                              {branch.status}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-slate-400 leading-relaxed max-w-md">
+                            {branch.desc}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-4 text-[10px] text-slate-400 font-mono self-end sm:self-center shrink-0">
+                        <div className="text-right">
+                          <p className="text-slate-300 dark:text-slate-500 font-semibold">{branch.author}</p>
+                          <p className="text-[9px] text-slate-400">{branch.date}</p>
+                        </div>
+                        <div className="h-8 w-px bg-slate-200 dark:bg-slate-800/80"></div>
+                        <div className="text-center min-w-[50px]">
+                          <p className="text-slate-300 dark:text-slate-500 font-semibold">{branch.commits}</p>
+                          <p className="text-[9px] text-slate-400">commits</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sidebar flow chart explanation */}
+              <div className="space-y-4">
+                <div className="p-5 rounded-2xl bg-slate-50/50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-850 space-y-4">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                    <LucideIcon name="GitPullRequest" size={13} className="text-emerald-500" />
+                    Workflow d'Intégration
+                  </h4>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Notre structure Git Flow assure une transition fluide des fonctionnalités vers la production en protégeant l'intégrité de l'application d'administration.
+                  </p>
+
+                  <div className="space-y-3.5 pt-2">
+                    <div className="flex gap-2.5">
+                      <div className="flex flex-col items-center">
+                        <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                        <div className="w-0.5 h-10 bg-slate-200 dark:bg-slate-800"></div>
+                      </div>
+                      <div>
+                        <h5 className="text-[11px] font-bold text-slate-700 dark:text-slate-300 leading-none">1. Branches de fonctionnalités (Feature)</h5>
+                        <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
+                          Chaque module de la PWA est codé sur sa branche <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-[9px]">feature/*</code> dédiée.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2.5">
+                      <div className="flex flex-col items-center">
+                        <div className="h-2 w-2 rounded-full bg-purple-500"></div>
+                        <div className="w-0.5 h-10 bg-slate-200 dark:bg-slate-800"></div>
+                      </div>
+                      <div>
+                        <h5 className="text-[11px] font-bold text-slate-700 dark:text-slate-300 leading-none">2. Branche de Test (Develop)</h5>
+                        <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
+                          Les Pull Requests sont fusionnées vers la branche <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-[9px]">develop</code> pour validation et tests d'intégration.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2.5">
+                      <div className="flex flex-col items-center">
+                        <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
+                      </div>
+                      <div>
+                        <h5 className="text-[11px] font-bold text-slate-700 dark:text-slate-300 leading-none">3. Version Stable (Main)</h5>
+                        <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
+                          La branche <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-[9px]">main</code> est le reflet direct du code stable et de production, automatiquement déployé sur Cloud Run.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
