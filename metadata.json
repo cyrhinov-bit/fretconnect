@@ -1,0 +1,6 @@
+{
+  "name": "FretConnect Admin",
+  "description": "Plateforme d'administration premium pour FretConnect, le réseau de transport connecté.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
